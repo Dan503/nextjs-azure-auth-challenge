@@ -17,7 +17,7 @@ export default function SecureLayout({ children }: Props) {
 			router.replace(`/unauthorized?path=${pathname}`)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [account])
+	}, [account, isIntendedToBeLoggedIn])
 
 	if (!account) {
 		return <p>Loading...</p>

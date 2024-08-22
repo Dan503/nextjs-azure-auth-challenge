@@ -51,8 +51,10 @@ export function AuthContextProvider({ children }: Props) {
 		async function handleAuthFetch() {
 			try {
 				const auth = await getAuth()
+				// This does not reliably provide the active account details
+				// It seems to be a bug in `getActiveAccount()`
+				// If it was reliable, I would not need the `sessionAccount` backup code
 				const activeAccount = await auth.getActiveAccount()
-				setIsIntendedToBeLoggedIn(true)
 				setAccount(activeAccount)
 			} catch {
 				setIsIntendedToBeLoggedIn(false)
@@ -84,6 +86,11 @@ export function AuthContextProvider({ children }: Props) {
 		if (account && !sessionStorageString) {
 			setIsIntendedToBeLoggedIn(true)
 			setSessionAccount(account)
+			return
+		}
+
+		if (isIntendedToBeLoggedIn === undefined) {
+			setIsIntendedToBeLoggedIn(false)
 		}
 	}, [account, isIntendedToBeLoggedIn])
 
