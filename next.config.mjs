@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	basePath: '/azure-auth-on-github-pages',
+	basePath: '/nextjs-azure-auth-challenge',
 	distDir: '/docs',
 }
 
