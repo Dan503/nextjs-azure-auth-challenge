@@ -16,7 +16,7 @@ export async function getAuth() {
 			postLogoutRedirectUri: baseUri,
 		},
 		cache: {
-			cacheLocation: 'sessionStorage',
+			cacheLocation: 'localStorage',
 		},
 	}
 
