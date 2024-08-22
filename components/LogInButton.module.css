@@ -10,7 +10,7 @@
 	transition: border-color 0.25s;
 
 	&:hover {
-		border-color: #646cff;
+		border-color: rgb(var(--link-rgb));
 	}
 	&:focus-visible {
 		outline: 4px auto -webkit-focus-ring-color;
