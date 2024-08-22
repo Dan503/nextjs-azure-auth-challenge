@@ -20,7 +20,7 @@ export default function SecureLayout({ children }: Props) {
 	}, [account])
 
 	if (!account) {
-		return null
+		return <p>Loading...</p>
 	}
 
 	return <>{children}</>

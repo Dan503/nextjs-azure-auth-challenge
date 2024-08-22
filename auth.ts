@@ -1,5 +1,5 @@
 'use client'
-import * as MSAL from 'msal'
+import * as MSAL from '@azure/msal-browser'
 
 export async function getAuth() {
 	const baseUri = `${window.location.origin}/azure-auth-fe-only-challenge/`
@@ -20,6 +20,6 @@ export async function getAuth() {
 		},
 	}
 
-	const auth = await new MSAL.UserAgentApplication(msalConfig)
+	const auth = await MSAL.createStandardPublicClientApplication(msalConfig)
 	return auth
 }

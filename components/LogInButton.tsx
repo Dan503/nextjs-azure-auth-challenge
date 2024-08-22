@@ -1,13 +1,8 @@
-import { AuthResponse } from 'msal'
 import { getAuth } from '../auth'
 import { useAuthContext } from './AuthContext'
 import styles from './LogInButton.module.css'
 
-interface Props {
-	onLogin?: (authResponse: AuthResponse) => void
-}
-
-export function LoginButton({ onLogin }: Props) {
+export function LoginButton() {
 	const { setAccount } = useAuthContext()
 	return (
 		<button
@@ -15,16 +10,8 @@ export function LoginButton({ onLogin }: Props) {
 			onClick={async () => {
 				try {
 					const auth = await getAuth()
-
-					if (auth.getLoginInProgress()) {
-						alert(
-							'There is another existing login session blocking your login attempt',
-						)
-					} else {
-						const loginResponse = await auth.loginPopup()
-						setAccount(loginResponse.account)
-						onLogin?.(loginResponse)
-					}
+					const loginResponse = await auth.loginPopup()
+					setAccount(loginResponse.account)
 				} catch (e) {
 					alert('Login failed')
 					setAccount(null)

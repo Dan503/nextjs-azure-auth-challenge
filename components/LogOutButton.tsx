@@ -2,11 +2,7 @@ import { getAuth } from '../auth'
 import { useAuthContext } from './AuthContext'
 import styles from './LogInButton.module.css'
 
-interface Props {
-	onLogout?: () => void
-}
-
-export function LogoutButton({ onLogout }: Props) {
+export function LogoutButton() {
 	const { setAccount } = useAuthContext()
 	return (
 		<button
@@ -14,9 +10,8 @@ export function LogoutButton({ onLogout }: Props) {
 			onClick={async () => {
 				try {
 					const auth = await getAuth()
-					await auth.logout()
+					await auth.logoutPopup()
 					setAccount(null)
-					onLogout?.()
 				} catch (e) {
 					alert('Logout failed')
 					console.error(e)

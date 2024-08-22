@@ -1,5 +1,5 @@
 'use client'
-import { Account } from 'msal'
+import { AccountInfo } from '@azure/msal-browser'
 import {
 	createContext,
 	ReactNode,
@@ -10,8 +10,8 @@ import {
 import { getAuth } from '../auth'
 
 export interface AuthContextValue {
-	account: Account | null
-	setAccount: React.Dispatch<React.SetStateAction<Account | null>>
+	account: AccountInfo | null
+	setAccount: React.Dispatch<React.SetStateAction<AccountInfo | null>>
 }
 
 export const defaultAuthContext: AuthContextValue = {
@@ -31,15 +31,15 @@ interface Props {
 
 // ES Lint says fast refresh only works if files only export either components or functions/variables not both
 export function AuthContextProvider({ children }: Props) {
-	const [account, setAccount] = useState<Account | null>(null)
+	const [account, setAccount] = useState<AccountInfo | null>(null)
 	const [contextValue, setContextValue] = useState(defaultAuthContext)
 
 	useEffect(() => {
 		async function handleAuthFetch() {
 			try {
 				const auth = await getAuth()
-				const response = await auth.getAccount()
-				setAccount(response)
+				const activeAccount = await auth.getActiveAccount()
+				setAccount(activeAccount)
 			} catch {
 				setAccount(null)
 			}
