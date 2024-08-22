@@ -14,12 +14,14 @@ type SetState<T> = React.Dispatch<React.SetStateAction<T>>
 export interface AuthContextValue {
 	account: AccountInfo | null
 	setAccount: SetState<AccountInfo | null>
+	isIntendedToBeLoggedIn: boolean | undefined
 	setIsIntendedToBeLoggedIn: SetState<boolean | undefined>
 }
 
 export const defaultAuthContext: AuthContextValue = {
 	account: null,
 	setAccount: () => null,
+	isIntendedToBeLoggedIn: undefined,
 	setIsIntendedToBeLoggedIn: () => null,
 }
 
@@ -98,11 +100,12 @@ export function AuthContextProvider({ children }: Props) {
 
 	useEffect(() => {
 		setContextValue({
-			account,
+			account: isIntendedToBeLoggedIn === false ? null : account,
 			setAccount,
+			isIntendedToBeLoggedIn,
 			setIsIntendedToBeLoggedIn,
 		})
-	}, [account])
+	}, [account, isIntendedToBeLoggedIn])
 
 	return (
 		<authContext.Provider value={contextValue}>
