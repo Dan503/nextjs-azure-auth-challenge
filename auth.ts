@@ -16,6 +16,8 @@ export async function getAuth() {
 			postLogoutRedirectUri: baseUri,
 		},
 		cache: {
+			// This is supposed to solve the issue of preventing the user from getting logged out on page refresh
+			// This doesn't appear to work properly
 			cacheLocation: 'localStorage',
 		},
 	}
