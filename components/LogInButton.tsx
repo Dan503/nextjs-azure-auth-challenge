@@ -3,7 +3,7 @@ import { useAuthContext } from './AuthContext'
 import styles from './LogInButton.module.css'
 
 export function LoginButton() {
-	const { setAccount } = useAuthContext()
+	const { setAccount, setIsIntendedToBeLoggedIn } = useAuthContext()
 	return (
 		<button
 			className={styles.LogInButton}
@@ -11,9 +11,11 @@ export function LoginButton() {
 				try {
 					const auth = await getAuth()
 					const loginResponse = await auth.loginPopup()
+					setIsIntendedToBeLoggedIn(true)
 					setAccount(loginResponse.account)
 				} catch (e) {
 					alert('Login failed')
+					setIsIntendedToBeLoggedIn(false)
 					setAccount(null)
 					console.error(e)
 				}

@@ -4,7 +4,7 @@ import { useAuthContext } from './AuthContext'
 import styles from './LogInButton.module.css'
 
 export function LogoutButton() {
-	const { setAccount, setSessionAccount } = useAuthContext()
+	const { setAccount, setIsIntendedToBeLoggedIn } = useAuthContext()
 	const router = useRouter()
 	return (
 		<button
@@ -13,8 +13,8 @@ export function LogoutButton() {
 				try {
 					const auth = await getAuth()
 					await auth.logoutPopup()
+					setIsIntendedToBeLoggedIn(false)
 					setAccount(null)
-					setSessionAccount(null)
 					setTimeout(() => {
 						router.push('/')
 					})
