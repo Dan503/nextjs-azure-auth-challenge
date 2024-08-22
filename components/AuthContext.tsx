@@ -12,11 +12,13 @@ import { getAuth } from '../auth'
 export interface AuthContextValue {
 	account: AccountInfo | null
 	setAccount: React.Dispatch<React.SetStateAction<AccountInfo | null>>
+	setSessionAccount: React.Dispatch<React.SetStateAction<AccountInfo | null>>
 }
 
 export const defaultAuthContext: AuthContextValue = {
 	account: null,
 	setAccount: () => null,
+	setSessionAccount: () => null,
 }
 
 export const authContext = createContext<AuthContextValue>(defaultAuthContext)
@@ -33,8 +35,14 @@ interface Props {
 export function AuthContextProvider({ children }: Props) {
 	const [account, setAccount] = useState<AccountInfo | null>(null)
 	const [contextValue, setContextValue] = useState(defaultAuthContext)
+	const [sessionAccount, setSessionAccount] = useState<AccountInfo | null>(
+		null,
+	)
 
 	useEffect(() => {
+		handleAuthFetch()
+		getSessionActiveAccount()
+
 		async function handleAuthFetch() {
 			try {
 				const auth = await getAuth()
@@ -44,12 +52,36 @@ export function AuthContextProvider({ children }: Props) {
 				setAccount(null)
 			}
 		}
-		handleAuthFetch()
+
+		function getSessionActiveAccount() {
+			const sessionAccountString = sessionStorage.getItem('activeAccount')
+			setSessionAccount(
+				sessionAccountString ? JSON.parse(sessionAccountString) : null,
+			)
+		}
 	}, [])
 
+	// Backup method of retrieving account details
+	// MSAL seems to have a bug causing it to lose the login session details on page refresh
 	useEffect(() => {
-		setContextValue({ account, setAccount })
-	}, [account])
+		if (!account && sessionAccount) {
+			setAccount(sessionAccount)
+		}
+
+		if (account && !sessionAccount) {
+			sessionStorage.setItem(
+				'activeAccount',
+				account ? JSON.stringify(account) : '',
+			)
+			setSessionAccount(account)
+		}
+
+		setContextValue({
+			account: account || sessionAccount,
+			setAccount,
+			setSessionAccount,
+		})
+	}, [account, sessionAccount])
 
 	return (
 		<authContext.Provider value={contextValue}>
