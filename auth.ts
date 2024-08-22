@@ -2,7 +2,7 @@
 import * as MSAL from '@azure/msal-browser'
 
 export async function getAuth() {
-	const baseUri = `${window.location.origin}/azure-auth-fe-only-challenge/`
+	const baseUri = `${window.location.origin}/nextjs-azure-auth-challenge/`
 
 	const msalConfig: MSAL.Configuration = {
 		auth: {
