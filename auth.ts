@@ -6,9 +6,9 @@ export async function getAuth() {
 
 	const msalConfig: MSAL.Configuration = {
 		auth: {
-			// The environment variable version of setting clientId
 			// There is no way to avoid exposing this to the client without using an edge function
-			clientId: process.env.NEXT_PUBLIC_AZURE_CLIENT_ID as string,
+			// Hardcoding the value to make things simple
+			clientId: '625af569-3c39-4e98-a97c-3a60973c09a6',
 			redirectUri: baseUri,
 			// I'm using this because I'm testing with a personal microsoft account
 			authority: 'https://login.microsoftonline.com/consumers',
